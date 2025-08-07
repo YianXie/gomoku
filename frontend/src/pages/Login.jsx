@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../api";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import LoadingIndicator from "../components/global/LoadingIndicator";
 import FormTitle from "../components/auth/form/FormTitle";
 import UsernameInput from "../components/auth/form/UsernameInput";
 import PasswordInput from "../components/auth/form/PasswordInput";
@@ -9,12 +13,25 @@ import gradient_bg from "../assets/images/auth/form/login-gradient-bg.jpeg";
 import login_bg from "../assets/images/auth/form/login-bg.jpg";
 
 function Login() {
+    const [loading, setLoading] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
+        setLoading(true);
         e.preventDefault();
-        console.log("Form submitted!");
+
+        try {
+            const res = await api.post("/api/token/", { username, password });
+            localStorage.setItem(ACCESS_TOKEN, res.data.access);
+            localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+            navigate("/");
+        } catch (error) {
+            console.error("Error while logging in:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -22,6 +39,7 @@ function Login() {
             className="flex h-full flex-wrap place-content-center bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${gradient_bg})` }}
         >
+            {loading && <LoadingIndicator />}
             <div className="flex h-85/100 w-85/100 gap-5 rounded-3xl bg-gray-100 p-5 shadow-2xl">
                 <form
                     onSubmit={handleSubmit}

@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../api";
+import LoadingIndicator from "../components/global/LoadingIndicator";
 import FormTitle from "../components/auth/form/FormTitle";
 import UsernameInput from "../components/auth/form/UsernameInput";
 import PasswordInput from "../components/auth/form/PasswordInput";
@@ -10,13 +13,29 @@ import gradient_bg from "../assets/images/auth/form/register-gradient-bg.jpeg";
 import login_bg from "../assets/images/auth/form/login-bg.jpg";
 
 function Register() {
+    const [loading, setLoading] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form submitted!");
+        if (password !== confirmPassword) {
+            alert("Your password does not match, please try again!");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            await api.post("/api/user/register/", { username, password });
+            navigate("/login");
+        } catch (error) {
+            console.error("Error while creating account:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -24,12 +43,13 @@ function Register() {
             className="flex h-full flex-wrap place-content-center bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${gradient_bg})` }}
         >
+            {loading && <LoadingIndicator />}
             <div className="flex h-85/100 w-85/100 gap-5 rounded-3xl bg-gray-100 p-5 shadow-2xl">
                 <form
                     onSubmit={handleSubmit}
                     className="flex w-50/100 flex-col flex-wrap place-content-center gap-5 pt-10 pb-10"
                 >
-                    <FormTitle>Join Us!</FormTitle>
+                    <FormTitle>Create Account</FormTitle>
                     <UsernameInput
                         value={username}
                         onChange={(e) => {
@@ -48,9 +68,9 @@ function Register() {
                             setConfirmPassword(e.target.value);
                         }}
                     />
-                    <PrimaryLink target={"/login"}>
-                        <div className="text-right">Login</div>
-                    </PrimaryLink>
+                    <div className="text-right">
+                        <PrimaryLink target={"/login"}>Login</PrimaryLink>
+                    </div>
                     <SubmitButton>Register</SubmitButton>
                     <SecondaryLink target={"/"}>
                         Continue as guest

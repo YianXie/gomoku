@@ -24,7 +24,7 @@ function ConfirmPasswordInput({ value, onChange }) {
                 className="w-100 rounded-md border-3 border-transparent bg-white p-3 pl-7.5 outline-1 outline-gray-300 transition-all duration-300 placeholder:select-none focus:border-blue-400/80"
                 type={passwordVisible ? "text" : "password"}
                 aria-label="confirm password input"
-                placeholder="Confirm password"
+                placeholder="Re-enter your password"
                 required
                 value={value}
                 onChange={onChange}
