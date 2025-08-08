@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import Tips from "../components/auth/form/Tips";
 import LoadingIndicator from "../components/global/LoadingIndicator";
 import FormTitle from "../components/auth/form/FormTitle";
 import UsernameInput from "../components/auth/form/UsernameInput";
@@ -68,10 +69,10 @@ function Login() {
                     </SecondaryLink>
                 </form>
                 <div
-                    className="h-full w-50/100 rounded-3xl bg-cover bg-center bg-no-repeat shadow-xl"
+                    className="flex h-full w-50/100 flex-col justify-end rounded-3xl bg-cover bg-center bg-no-repeat shadow-xl"
                     style={{ backgroundImage: `url(${login_bg})` }}
                 >
-                    <p>You have a 23 days streak!</p>
+                    <Tips />
                 </div>
             </div>
         </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
+import Tips from "../components/auth/form/Tips";
 import LoadingIndicator from "../components/global/LoadingIndicator";
 import FormTitle from "../components/auth/form/FormTitle";
 import UsernameInput from "../components/auth/form/UsernameInput";
@@ -10,7 +11,7 @@ import SubmitButton from "../components/auth/form/SubmitButton";
 import PrimaryLink from "../components/auth/form/PrimaryLink";
 import SecondaryLink from "../components/auth/form/SecondaryLink";
 import gradient_bg from "../assets/images/auth/form/register-gradient-bg.jpeg";
-import login_bg from "../assets/images/auth/form/login-bg.jpg";
+import register_bg from "../assets/images/auth/form/register-bg.jpg";
 
 function Register() {
     const [loading, setLoading] = useState(false);
@@ -77,10 +78,10 @@ function Register() {
                     </SecondaryLink>
                 </form>
                 <div
-                    className="h-full w-50/100 rounded-3xl bg-cover bg-center bg-no-repeat shadow-xl"
-                    style={{ backgroundImage: `url(${login_bg})` }}
+                    className="flex h-full w-50/100 flex-col justify-end rounded-3xl bg-cover bg-center bg-no-repeat shadow-xl"
+                    style={{ backgroundImage: `url(${register_bg})` }}
                 >
-                    <p>You have a 23 days streak!</p>
+                    <Tips />
                 </div>
             </div>
         </div>
